@@ -1,0 +1,3 @@
+[submodule "submodules/Godot-State-Machine"]
+	path = submodules/Godot-State-Machine
+	url = https://github.com/rodriguezric/Godot-State-Machine.git
