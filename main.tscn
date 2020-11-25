@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://dirt-edge16.tres" type="TileSet" id=1]
 [ext_resource path="res://Uncle-Ninja-spritesheet.png" type="Texture" id=2]
 [ext_resource path="res://Player.gd" type="Script" id=3]
 [ext_resource path="res://Stand.tres" type="Animation" id=4]
+[ext_resource path="res://StateMachine.gd" type="Script" id=5]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Fall"
@@ -106,3 +107,6 @@ shape = SubResource( 5 )
 [node name="Camera2D" type="Camera2D" parent="Player"]
 current = true
 zoom = Vector2( 0.25, 0.25 )
+
+[node name="StateMachine" type="Node" parent="Player"]
+script = ExtResource( 5 )
