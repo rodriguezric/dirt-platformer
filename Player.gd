@@ -15,6 +15,8 @@ var motion = Vector2.ZERO
 onready var sprite = $Sprite
 onready var animation = $AnimationPlayer
 
+var air_jumps = 1
+
 func _input(event):
 	if event.is_action_pressed("jump"):
 		jump()
@@ -33,7 +35,11 @@ func _input(event):
 func jump():
 	if is_on_floor():
 		motion.y = -JUMP_FORCE
-	
+		
+	if air_jumps > 0 and not is_on_floor() and not is_on_wall():
+		motion.y = -JUMP_FORCE
+		air_jumps = air_jumps - 1
+		
 	if is_on_wall():
 		motion.y = -JUMP_FORCE
 		motion.x = MAX_SPEED * input_x() * -1
@@ -82,6 +88,7 @@ func walking_physics(delta):
 	if is_on_floor():
 		motion.x += input_x() * ACCELERATION * delta
 		motion.x = lerp(motion.x, 0, FRICTION)
+		air_jumps = 1
 
 func jumping_physics(delta):
 	if !is_on_floor():
