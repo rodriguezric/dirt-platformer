@@ -4,7 +4,7 @@
 [ext_resource path="res://Uncle-Ninja-spritesheet.png" type="Texture" id=2]
 [ext_resource path="res://Player.gd" type="Script" id=3]
 [ext_resource path="res://Stand.tres" type="Animation" id=4]
-[ext_resource path="res://StateMachine.gd" type="Script" id=5]
+[ext_resource path="res://PlayerStateMachine.gd" type="Script" id=5]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Fall"
@@ -110,3 +110,27 @@ zoom = Vector2( 0.25, 0.25 )
 
 [node name="StateMachine" type="Node" parent="Player"]
 script = ExtResource( 5 )
+
+[node name="JumpBuffer" type="Timer" parent="Player"]
+wait_time = 0.15
+one_shot = true
+
+[node name="LeftFoot" type="RayCast2D" parent="Player"]
+position = Vector2( -0.501, -2 )
+enabled = true
+cast_to = Vector2( -5, 0 )
+
+[node name="RightFoot" type="RayCast2D" parent="Player"]
+position = Vector2( -0.501007, -2 )
+enabled = true
+cast_to = Vector2( 5, 0 )
+
+[node name="LeftHand" type="RayCast2D" parent="Player"]
+position = Vector2( -0.501, -12 )
+enabled = true
+cast_to = Vector2( -5, 0 )
+
+[node name="RightHand" type="RayCast2D" parent="Player"]
+position = Vector2( -0.501, -12 )
+enabled = true
+cast_to = Vector2( 5, 0 )

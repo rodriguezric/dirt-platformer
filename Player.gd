@@ -6,45 +6,66 @@ const MAX_SPEED = 105
 const JUMP_FORCE = 200
 
 const FRICTION = 0.25
-const AIR_RES = 0.025
+const AIR_RES = 0.05
 
 const GRAVITY = 500
 
 var motion = Vector2.ZERO
+var direction = 1
 
 onready var sprite = $Sprite
 onready var animation = $AnimationPlayer
+onready var state_machine = $StateMachine
+onready var jump_buffer = $JumpBuffer
+onready var left_foot = $LeftFoot
+onready var right_foot = $RightFoot
+onready var left_hand = $LeftHand
+onready var right_hand = $RightHand
 
-var air_jumps = 1
 
-func _input(event):
-	if event.is_action_pressed("jump"):
-		jump()
-	
-	if event.is_action_pressed("ui_right"):
-		sprite.flip_h = 0
-	
-	if event.is_action_pressed("ui_left"):
-		sprite.flip_h = 1
-	
-	if event.is_action_pressed("ui_down"):
-		if motion.y > 0 and !is_on_wall():
-			motion.y = MAX_SPEED * 2
-			
+func air_movement(delta):
+	motion.x += input_x() * ACCELERATION * delta * AIR_RES
+
 
 func jump():
-	if is_on_floor():
-		motion.y = -JUMP_FORCE
-		
-	if air_jumps > 0 and not is_on_floor() and not is_on_wall():
-		motion.y = -JUMP_FORCE
-		air_jumps = air_jumps - 1
-		
-	if is_on_wall():
-		motion.y = -JUMP_FORCE
-		motion.x = MAX_SPEED * input_x() * -1
+	motion.y = -JUMP_FORCE
+	
+	
+func wall_jump():
+	motion.y = -JUMP_FORCE
+	motion.x = backwards() * MAX_SPEED
+	sprite.flip_h = not sprite.flip_h
 
 
+func update_sprite_direction():
+	if input_x() > 0: 
+		sprite.flip_h = false
+	
+	if input_x() < 0:
+		sprite.flip_h = true
+
+
+func direction():
+	return 1 if sprite.flip_h == false else -1
+	
+	
+func backwards():
+	return -1 * direction()
+
+
+func apply_gravity(delta):
+	motion.y += delta * GRAVITY
+	
+
+func apply_velocity(delta):
+	motion.x = clamp(motion.x, -MAX_SPEED, MAX_SPEED)
+	motion = move_and_slide(motion, Vector2.UP)
+	
+	
+func apply_friction():
+	motion.x = lerp(motion.x, 0, FRICTION)	
+
+	
 func get_left():
 	return Input.get_action_strength("ui_left")
 
@@ -55,56 +76,65 @@ func get_right():
 
 func input_x():
 	return get_right() - get_left()
+	
+	
+func walk(delta):
+	motion.x += input_x() * ACCELERATION * delta
 
 
+func wall_cling(delta):
+	if motion.y > 0:
+		motion.y *= 0.5
+	
+	
 func wall_cling_correction():
-	if is_on_wall():
-		if input_x() == 1:
-			sprite.flip_h = 0
-	
-		if input_x() == -1:
-			sprite.flip_h = 1
-
-func handle_animations():
-	if is_on_floor() and input_x() == 0:
-		animation.play("Stand")
-	
-	if is_on_floor() and input_x() != 0:
-		animation.play("Walk")
+	if right_wall_collision():
+		sprite.flip_h = false
 		
-	if not is_on_floor() and motion.y < 0:
-		animation.play("Jump")
+	if left_wall_collision():
+		sprite.flip_h = true
 	
-	if not is_on_floor() and motion.y > 0:
-		animation.play("Fall")	
-		
-	if is_on_wall() and not is_on_floor():
-		animation.play("Wall Cling")
 	
-	wall_cling_correction()
+func start_jump_buffer():
+	jump_buffer.start()
 	
+	
+func stop_jump_buffer():
+	jump_buffer.stop()
+	
+	
+func can_buffer_jump():
+	return not jump_buffer.is_stopped()
 
-func walking_physics(delta):
-	if is_on_floor():
-		motion.x += input_x() * ACCELERATION * delta
-		motion.x = lerp(motion.x, 0, FRICTION)
-		air_jumps = 1
 
-func jumping_physics(delta):
-	if !is_on_floor():
-		motion.x += input_x() * ACCELERATION * AIR_RES * delta
+func foot_collisions():
+	return (
+		left_foot.is_colliding() or 
+		right_foot.is_colliding()
+	)
+	
+	
+func hand_collisions():
+	return (
+		left_hand.is_colliding() or 
+		right_hand.is_colliding()
+	)
 
-func wall_cling_physics(delta):
-	if is_on_wall() and motion.y > 0:
-		motion.y += GRAVITY * delta * AIR_RES
-	else:
-		motion.y += GRAVITY * delta 
 
-func _physics_process(delta):
-	walking_physics(delta)
-	jumping_physics(delta)
-	wall_cling_physics(delta)
-	handle_animations()
-			
-	motion.x = clamp(motion.x, -MAX_SPEED, MAX_SPEED)
-	motion = move_and_slide(motion, Vector2.UP)
+func wall_collision():
+	return (
+		hand_collisions() and 
+		foot_collisions()
+	)
+
+func left_wall_collision():
+	return (
+		left_foot.is_colliding() and 
+		left_hand.is_colliding()
+	)
+	
+func right_wall_collision():
+	return (
+		right_foot.is_colliding() and 
+		right_hand.is_colliding()
+	)
