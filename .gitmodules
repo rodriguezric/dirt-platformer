@@ -1,3 +1,6 @@
 [submodule "submodules/Godot-State-Machine"]
 	path = submodules/Godot-State-Machine
 	url = https://github.com/rodriguezric/Godot-State-Machine.git
+[submodule "submodules/Godot-Dialog-System"]
+	path = submodules/Godot-Dialog-System
+	url = https://github.com/rodriguezric/Godot-Dialog-System.git
