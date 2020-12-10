@@ -22,7 +22,6 @@ onready var right_foot = $RightFoot
 onready var left_hand = $LeftHand
 onready var right_hand = $RightHand
 
-
 func air_movement(delta):
 	motion.x += input_x() * ACCELERATION * delta * AIR_RES
 
@@ -36,6 +35,10 @@ func wall_jump():
 	motion.x = backwards() * MAX_SPEED
 	sprite.flip_h = not sprite.flip_h
 
+
+func wall_drop():
+	position.x += backwards() * 1
+	
 
 func update_sprite_direction():
 	if input_x() > 0: 
@@ -138,3 +141,5 @@ func right_wall_collision():
 		right_foot.is_colliding() and 
 		right_hand.is_colliding()
 	)
+
+

@@ -29,6 +29,7 @@ func _input(event):
 	
 	if event.is_action_pressed("ui_down"):
 		if state == states.wall_cling:
+			parent.wall_drop()
 			set_state(states.fall)
 	
 	if left_or_right(event):
@@ -63,9 +64,8 @@ func in_air_states():
 
 
 func _get_transition(delta):
+	parent.update_sprite_direction()
 	if in_grounded_states():
-		parent.update_sprite_direction()
-		
 		if !parent.is_on_floor():
 			return states.fall
 	
