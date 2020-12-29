@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Uncle-Ricky-spritesheet.png-58c5e794488c964288b384d5b953a083.stex"
+path="res://.import/lucas-blob.png-39c3b06123da5fa988f9cc4fbd074c70.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Uncle-Ricky-spritesheet.png"
-dest_files=[ "res://.import/Uncle-Ricky-spritesheet.png-58c5e794488c964288b384d5b953a083.stex" ]
+source_file="res://graphics/lucas-blob.png"
+dest_files=[ "res://.import/lucas-blob.png-39c3b06123da5fa988f9cc4fbd074c70.stex" ]
 
 [params]
 

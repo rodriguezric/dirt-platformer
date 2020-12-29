@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+export(NodePath) var door
+var is_colliding : bool
+signal tp_player
+
+onready var raycast = $RayCast2D
+
+func _physics_process(delta):
+	is_colliding = raycast.get_collider() != null
+
+
+func teleport_player():
+	emit_signal(\"tp_player\", get_node(door).position)
+	
+
+func _input(event):
+	if event.is_action_pressed(\"ui_up\"):
+		if is_colliding:
+			teleport_player()
+"
+
+[node name="Door" type="Node2D"]
+script = SubResource( 1 )
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+z_index = -2
+color = Color( 0, 0, 0, 0.486275 )
+invert_border = 0.1
+polygon = PoolVector2Array( -16, 0, 16, 0, 16, -20, 12, -28, 4, -32, -4, -32, -12, -28, -16, -20.7304 )
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2( -10, -6 )
+enabled = true
+cast_to = Vector2( 20, 0 )
+collision_mask = 524288

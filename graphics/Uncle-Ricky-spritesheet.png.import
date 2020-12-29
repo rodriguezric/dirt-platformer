@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tileset_Dirt-Edge16.png-06e7fb14a957f986605a3b36b33cdfe5.stex"
+path="res://.import/Uncle-Ricky-spritesheet.png-19ba587ea185782f7df671276e57bada.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Dirt-Edge16/tileset_Dirt-Edge16.png"
-dest_files=[ "res://.import/tileset_Dirt-Edge16.png-06e7fb14a957f986605a3b36b33cdfe5.stex" ]
+source_file="res://graphics/Uncle-Ricky-spritesheet.png"
+dest_files=[ "res://.import/Uncle-Ricky-spritesheet.png-19ba587ea185782f7df671276e57bada.stex" ]
 
 [params]
 

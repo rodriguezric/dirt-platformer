@@ -36,7 +36,11 @@ func _input(event):
 		if in_air_states():
 			if parent.is_on_wall():
 				return states.wall_cling
-		
+	
+	if event.is_action_pressed("attack"):
+		if in_grounded_states():
+			parent.attack()
+			set_state(states.attack)
 
 func _state_logic(delta):
 	parent.apply_gravity(delta)
@@ -101,7 +105,11 @@ func _get_transition(delta):
 			
 			if parent.is_on_floor():
 				return states.idle
-				
+		
+		states.attack:
+			if get_parent().animation.current_animation == "Stand":
+				set_state(states.idle)
+			
 	return state
 
 func _enter_state(new_state, old_state):
@@ -118,6 +126,9 @@ func _enter_state(new_state, old_state):
 				parent.start_jump_buffer()
 		states.wall_cling:
 			parent.animation.play("Wall Cling")
+		states.attack:
+			parent.animation.play("Attack")
+			parent.animation.queue("Stand")
 
 func _exit_state(old_state, new_state):
 	pass

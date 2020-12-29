@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/lucas-blob.png-96368717031b0b9f67597cc404c5ab03.stex"
+path="res://.import/Uncle-Ninja-spritesheet.png-7eb0f360274749ea9d8196345d832392.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://lucas-blob.png"
-dest_files=[ "res://.import/lucas-blob.png-96368717031b0b9f67597cc404c5ab03.stex" ]
+source_file="res://graphics/Uncle-Ninja-spritesheet.png"
+dest_files=[ "res://.import/Uncle-Ninja-spritesheet.png-7eb0f360274749ea9d8196345d832392.stex" ]
 
 [params]
 

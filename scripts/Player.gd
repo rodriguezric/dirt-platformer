@@ -21,6 +21,7 @@ onready var left_foot = $LeftFoot
 onready var right_foot = $RightFoot
 onready var left_hand = $LeftHand
 onready var right_hand = $RightHand
+onready var weapon = $WeaponHand
 
 func air_movement(delta):
 	motion.x += input_x() * ACCELERATION * delta * AIR_RES
@@ -28,8 +29,8 @@ func air_movement(delta):
 
 func jump():
 	motion.y = -JUMP_FORCE
-	
-	
+
+
 func wall_jump():
 	motion.y = -JUMP_FORCE
 	motion.x = backwards() * MAX_SPEED
@@ -38,13 +39,19 @@ func wall_jump():
 
 func wall_drop():
 	position.x += backwards() * 1
-	
+
+
+func attack():
+	motion.x = 0
+
 
 func update_sprite_direction():
 	if input_x() > 0: 
+		weapon.scale.x = 1
 		sprite.flip_h = false
 	
 	if input_x() < 0:
+		weapon.scale.x = -1
 		sprite.flip_h = true
 
 
@@ -142,4 +149,7 @@ func right_wall_collision():
 		right_hand.is_colliding()
 	)
 
+func _on_Door_tp_player(coordinates:Vector2):
+	position.x = coordinates.x
+	position.y = coordinates.y
 
